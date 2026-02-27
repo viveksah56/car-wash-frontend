@@ -1,26 +1,37 @@
 "use client";
 
-import {useState} from "react";
-import {Badge} from "@/components/ui/badge";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle,} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Textarea} from "@/components/ui/textarea";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
-import {Calendar} from "@/components/ui/calendar";
-import {Separator} from "@/components/ui/separator";
-import {CalendarDays, Car, CheckCircle, Clock} from "lucide-react";
-import {toast} from "sonner";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { Separator } from "@/components/ui/separator";
+import { CalendarDays, Car, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
 import ScrollReveal from "@/components/animation/scroll-reveal";
-import {cn} from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 const services = [
-    {value: "quick-shine", label: "Quick Shine – $49"},
-    {value: "full-care", label: "Full Care – $149"},
-    {value: "showroom-detail", label: "Showroom Detail – $299"},
+    { value: "quick-shine", label: "Quick Shine – $49" },
+    { value: "full-care", label: "Full Care – $149" },
+    { value: "showroom-detail", label: "Showroom Detail – $299" },
 ];
-
 
 export default function Book() {
     const [date, setDate] = useState<Date | undefined>(undefined);
@@ -39,9 +50,8 @@ export default function Book() {
             <div className="min-h-screen bg-background">
                 <main className="flex min-h-[80vh] items-center justify-center px-4 pb-16 pt-24">
                     <ScrollReveal className="text-center">
-                        <div
-                            className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 sm:h-20 sm:w-20">
-                            <CheckCircle className="h-8 w-8 text-primary sm:h-10 sm:w-10"/>
+                        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 sm:h-20 sm:w-20">
+                            <CheckCircle className="h-8 w-8 text-primary sm:h-10 sm:w-10" />
                         </div>
                         <h1 className="mb-4 font-display text-3xl font-bold text-foreground sm:text-4xl">
                             Booking Confirmed!
@@ -77,31 +87,29 @@ export default function Book() {
                             <Card className="border-border bg-card/50">
                                 <CardHeader className="pb-2">
                                     <CardTitle className="flex items-center gap-2 font-display text-base sm:text-lg">
-                                        <CalendarDays className="h-5 w-5 text-primary"/>
-                                        Select Date
+                                        <CalendarDays className="h-5 w-5 text-primary" />
+                                        Select Date & Time
                                     </CardTitle>
                                     <CardDescription className="text-xs sm:text-sm">
-                                        Choose your preferred appointment date
+                                        Choose your preferred appointment date and time
                                     </CardDescription>
                                 </CardHeader>
-                                <CardContent className="flex  flex-col justify-center overflow-x-auto">
-                                   <div className="w-full">
-                                       <Calendar
-                                           mode="single"
-                                           selected={date}
-                                           onSelect={setDate}
-                                           disabled={(d) => d < new Date()}
-                                           className={cn('rounded-md border border-border p-2 [--cell-size:--spacing(7)] [--cell-margin:--spacing(6)] [--cell-border-radius:--spacing(2)]', '' +
-                                               'w-full')}
-                                       />
-                                   </div>
-                                    <div>
-                                        <Label>
-                                            Appointment Time
-                                        </Label>
+                                <CardContent className="flex flex-col gap-4 overflow-x-auto">
+                                    <Calendar
+                                        mode="single"
+                                        selected={date}
+                                        onSelect={setDate}
+                                        disabled={(d) => d < new Date()}
+                                        className={cn(
+                                            "w-full rounded-md border border-border p-2",
+                                            "[--cell-size:--spacing(7)] [--cell-margin:--spacing(6)] [--cell-border-radius:--spacing(2)]"
+                                        )}
+                                    />
+                                    <div className="space-y-2">
+                                        <Label htmlFor="time">Appointment Time</Label>
                                         <Input
+                                            id="time"
                                             type="time"
-                                            placeholder="Select Time"
                                             required
                                             className="bg-secondary/50"
                                         />
@@ -114,7 +122,7 @@ export default function Book() {
                             <Card className="border-border bg-card/50">
                                 <CardHeader className="pb-2">
                                     <CardTitle className="flex items-center gap-2 font-display text-base sm:text-lg">
-                                        <Car className="h-5 w-5 text-primary"/>
+                                        <Car className="h-5 w-5 text-primary" />
                                         Your Details
                                     </CardTitle>
                                     <CardDescription className="text-xs sm:text-sm">
@@ -156,24 +164,21 @@ export default function Book() {
                                             />
                                         </div>
 
-
-                                            <div className="space-y-2 w-full    ">
-                                                <Label htmlFor="service">Service Package</Label>
-                                                <Select required >
-                                                    <SelectTrigger id="service" className="bg-secondary/50 w-full" >
-                                                        <SelectValue placeholder="Choose a package"/>
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {services.map((s) => (
-                                                            <SelectItem key={s.value} value={s.value}>
-                                                                {s.label}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-
-
+                                        <div className="space-y-2">
+                                            <Label htmlFor="service">Service Package</Label>
+                                            <Select required>
+                                                <SelectTrigger id="service" className="w-full bg-secondary/50">
+                                                    <SelectValue placeholder="Choose a package" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {services.map((s) => (
+                                                        <SelectItem key={s.value} value={s.value}>
+                                                            {s.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
 
                                         <div className="space-y-2">
                                             <Label htmlFor="vehicle">Vehicle Info</Label>
@@ -194,7 +199,7 @@ export default function Book() {
                                             />
                                         </div>
 
-                                        <Separator/>
+                                        <Separator />
 
                                         {date && (
                                             <p className="text-sm text-muted-foreground">
