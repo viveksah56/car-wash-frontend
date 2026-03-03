@@ -149,4 +149,7 @@
   .shadow-card {
     box-shadow: var(--shadow-card);
   }
+  .glass {
+    @apply bg-card/60 backdrop-blur-xl border border-border/50;
+  }
 }
