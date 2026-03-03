@@ -11,7 +11,7 @@ interface RootProvidersProps {
 
 export default function RootProviders({children}: RootProvidersProps) {
     return (
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider>
             <Toaster richColors position={'bottom-right'}
                      duration={5000}
             />

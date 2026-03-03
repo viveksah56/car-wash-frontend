@@ -33,24 +33,25 @@ type NavLink = (typeof NAV_LINKS)[number];
 
 function ThemeToggle({ className }: { className?: string }) {
     const { resolvedTheme, setTheme } = useTheme();
-    const [isPending, startTransition] = useTransition();
-    const [optimisticTheme, setOptimisticTheme] = useOptimistic(resolvedTheme);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const toggle = useCallback(() => {
-        const next = optimisticTheme === "dark" ? "light" : "dark";
-        startTransition(() => {
-            setOptimisticTheme(next);
-            setTheme(next);
-        });
-    }, [optimisticTheme, setTheme, setOptimisticTheme]);
+        const next = resolvedTheme === "dark" ? "light" : "dark";
+        setTheme(next);
+    }, [resolvedTheme, setTheme]);
+
+    if (!mounted) return null;
 
     return (
         <Button
             variant="ghost"
             size="icon"
             onClick={toggle}
-            disabled={isPending}
-            aria-label={`Switch to ${optimisticTheme === "dark" ? "light" : "dark"} mode`}
+            aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
             className={cn("h-9 w-9", className)}
         >
             <Sun
@@ -67,26 +68,29 @@ function ThemeToggle({ className }: { className?: string }) {
 
 function MobileThemeToggle() {
     const { resolvedTheme, setTheme } = useTheme();
-    const [isPending, startTransition] = useTransition();
-    const [optimisticTheme, setOptimisticTheme] = useOptimistic(resolvedTheme);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const toggle = useCallback(() => {
-        const next = optimisticTheme === "dark" ? "light" : "dark";
-        startTransition(() => {
-            setOptimisticTheme(next);
-            setTheme(next);
-        });
-    }, [optimisticTheme, setTheme, setOptimisticTheme]);
+        const next = resolvedTheme === "dark" ? "light" : "dark";
+        setTheme(next);
+    }, [resolvedTheme, setTheme]);
+
+    if (!mounted) return null;
+
+    const isDark = resolvedTheme === "dark";
 
     return (
         <Button
             variant="outline"
             className="w-full mb-3"
             onClick={toggle}
-            disabled={isPending}
-            aria-label={`Switch to ${optimisticTheme === "dark" ? "light" : "dark"} mode`}
+            aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
         >
-            {optimisticTheme === "dark" ? (
+            {isDark ? (
                 <>
                     <Sun className="mr-2 h-4 w-4" aria-hidden="true" />
                     Light Mode
