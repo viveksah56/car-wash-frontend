@@ -35,6 +35,11 @@ function ThemeToggle({ className }: { className?: string }) {
     const { resolvedTheme, setTheme } = useTheme();
     const [isPending, startTransition] = useTransition();
     const [optimisticTheme, setOptimisticTheme] = useOptimistic(resolvedTheme);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const toggle = useCallback(() => {
         const next = optimisticTheme === "dark" ? "light" : "dark";
@@ -50,7 +55,7 @@ function ThemeToggle({ className }: { className?: string }) {
             size="icon"
             onClick={toggle}
             disabled={isPending}
-            aria-label={`Switch to ${optimisticTheme === "dark" ? "light" : "dark"} mode`}
+            aria-label={mounted ? `Switch to ${optimisticTheme === "dark" ? "light" : "dark"} mode` : "Toggle theme"}
             className={cn("h-9 w-9", className)}
         >
             <Sun
@@ -69,6 +74,11 @@ function MobileThemeToggle() {
     const { resolvedTheme, setTheme } = useTheme();
     const [isPending, startTransition] = useTransition();
     const [optimisticTheme, setOptimisticTheme] = useOptimistic(resolvedTheme);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const toggle = useCallback(() => {
         const next = optimisticTheme === "dark" ? "light" : "dark";
@@ -84,9 +94,9 @@ function MobileThemeToggle() {
             className="w-full mb-3"
             onClick={toggle}
             disabled={isPending}
-            aria-label={`Switch to ${optimisticTheme === "dark" ? "light" : "dark"} mode`}
+            aria-label={mounted ? `Switch to ${optimisticTheme === "dark" ? "light" : "dark"} mode` : "Toggle theme"}
         >
-            {optimisticTheme === "dark" ? (
+            {mounted && optimisticTheme === "dark" ? (
                 <>
                     <Sun className="mr-2 h-4 w-4" aria-hidden="true" />
                     Light Mode
