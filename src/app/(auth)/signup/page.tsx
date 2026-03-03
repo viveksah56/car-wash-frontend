@@ -19,7 +19,7 @@ export default function Signup() {
     }, []);
 
     return (
-        <div className="relative flex min-h-screen items-center justify-center px-4 py-12">
+        <div className="relative flex min-h-screen items-center justify-center bg-background px-4 py-12">
             <Image
                 src="/hero-car.jpg"
                 alt="Hero Car"
@@ -27,7 +27,7 @@ export default function Signup() {
                 priority
                 className="object-cover"
             />
-            <div className="absolute inset-0 bg-black/60" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/40" />
 
             <div className="relative z-10 w-full max-w-md space-y-6 sm:space-y-8">
                 <div className="text-center">

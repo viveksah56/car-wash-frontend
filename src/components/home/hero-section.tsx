@@ -8,7 +8,7 @@ import Image from "next/image";
 
 const HeroSection = () => {
     return (
-        <section className="relative min-h-screen overflow-hidden">
+        <section className="relative min-h-screen overflow-hidden bg-background">
             {/* Background image */}
             <div className="absolute inset-0">
                 <Image
@@ -18,8 +18,8 @@ const HeroSection = () => {
                     className="h-full w-full object-cover"
                     loading="eager"
                 />
-                <div className="absolute inset-0 bg-linear-to-r from-background via-background/80 to-background/30"/>
-                <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-background/50"/>
+                <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/30"/>
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50"/>
             </div>
 
             {/* Content */}
