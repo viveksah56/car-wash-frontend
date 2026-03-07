@@ -41,7 +41,7 @@ const ForgotPassword = () => {
                         <span className="font-display text-2xl font-bold text-foreground">PremiumWash</span>
                     </Link>
                     <h1 className="font-display text-3xl font-bold text-foreground">Forgot password?</h1>
-                    <p className="mt-2 text-muted-foreground">Enter your email and we'll send you a reset link</p>
+                    <p className="mt-2 text-muted-foreground">Enter your email and we&#39;ll send you a reset link</p>
                 </div>
 
                 <div className="glass rounded-2xl p-8 space-y-6">

@@ -8,12 +8,33 @@ import { Separator } from "@/components/ui/separator";
 import { Droplets, Mail, Lock, Eye, EyeOff, Chrome, Facebook } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { LoginFormValues, loginSchema } from "@/schema/auth.schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import authService from "@/service/auth.service";
+import Cookies from "js-cookie";
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
 
-    const togglePassword = useCallback(() => {
-        setShowPassword((prev) => !prev);
+    const {
+        register,
+        handleSubmit,
+        formState: { isSubmitting },
+    } = useForm<LoginFormValues>({
+        resolver: zodResolver(loginSchema),
+        mode: "onTouched",
+    });
+
+    const togglePassword = useCallback(() => setShowPassword((prev) => !prev), []);
+
+    const onSubmit = useCallback(async (data: LoginFormValues) => {
+
+        console.log(data);
+        const response = await authService.login(data);
+        Cookies.set("_token", response?.data?.accessToken);
+        console.log(response?.data);
+
     }, []);
 
     return (
@@ -25,15 +46,15 @@ export default function Login() {
                 priority
                 className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/40" />
+            <div className="absolute inset-0 bg-linear-to-r from-background via-background/80 to-background/40" />
 
             <div className="relative z-10 w-full max-w-md space-y-6 sm:space-y-8">
                 <div className="text-center">
                     <Link href="/" className="mb-5 inline-flex items-center gap-2 sm:mb-6">
                         <Droplets className="h-7 w-7 text-primary sm:h-8 sm:w-8" />
                         <span className="font-display text-xl font-bold text-white sm:text-2xl">
-              PremiumWash
-            </span>
+                            PremiumWash
+                        </span>
                     </Link>
                     <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">
                         Welcome back
@@ -46,6 +67,7 @@ export default function Login() {
                 <div className="glass rounded-2xl p-6 space-y-5 sm:p-8 sm:space-y-6">
                     <div className="grid grid-cols-2 gap-3">
                         <Button
+                            type="button"
                             variant="outline"
                             className="h-11 w-full gap-2 text-sm text-white!"
                         >
@@ -53,6 +75,7 @@ export default function Login() {
                             Google
                         </Button>
                         <Button
+                            type="button"
                             variant="outline"
                             className="h-11 w-full gap-2 text-sm text-white!"
                         >
@@ -64,11 +87,11 @@ export default function Login() {
                     <div className="relative">
                         <Separator />
                         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap bg-card px-3 text-xs text-muted-foreground">
-              or continue with email
-            </span>
+                            or continue with email
+                        </span>
                     </div>
 
-                    <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
                             <div className="relative">
@@ -77,8 +100,8 @@ export default function Login() {
                                     id="email"
                                     type="email"
                                     placeholder="you@example.com"
-                                    required
                                     className="pl-10"
+                                    {...register("email")}
                                 />
                             </div>
                         </div>
@@ -99,8 +122,8 @@ export default function Login() {
                                     id="password"
                                     type={showPassword ? "text" : "password"}
                                     placeholder="••••••••"
-                                    required
                                     className="pl-10 pr-10"
+                                    {...register("password")}
                                 />
                                 <button
                                     type="button"
@@ -117,8 +140,8 @@ export default function Login() {
                             </div>
                         </div>
 
-                        <Button className="h-11 w-full" type="submit">
-                            Sign In
+                        <Button className="h-11 w-full" type="submit" disabled={isSubmitting}>
+                            {isSubmitting ? "Signing in..." : "Sign In"}
                         </Button>
                     </form>
                 </div>
