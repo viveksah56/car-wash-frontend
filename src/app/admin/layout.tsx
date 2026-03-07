@@ -46,12 +46,18 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <div className="flex min-h-screen w-full">
                 <AdminSidebar />
                 <main className="flex flex-1 flex-col overflow-hidden">
-                    <header className="flex items-center justify-between border-b border-border bg-background px-4 py-3">
-                        <SidebarTrigger />
+                    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/80 px-6 backdrop-blur-md">
+                        <div className="flex items-center gap-4">
+                            <SidebarTrigger />
+                            <div className="h-6 w-px bg-border" />
+                            <h2 className="text-sm font-medium text-muted-foreground">Dashboard</h2>
+                        </div>
                         <ThemeToggleAdmin />
                     </header>
-                    <div className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
-                        {children}
+                    <div className="flex-1 overflow-auto p-6 lg:p-10">
+                        <div className="mx-auto max-w-7xl">
+                            {children}
+                        </div>
                     </div>
                 </main>
             </div>

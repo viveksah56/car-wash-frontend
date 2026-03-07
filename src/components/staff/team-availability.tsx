@@ -133,34 +133,37 @@ export default function TeamAvailability() {
 
     return (
         <div className="w-full">
-            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h2 className="text-xl font-bold text-foreground sm:text-2xl">
-                        Team Availability
-                    </h2>
-                    <div className="mt-2 flex items-center gap-2">
-                        <Badge
-                            variant="secondary"
-                            className="border border-emerald-500/30 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-                        >
-                            LIVE
-                        </Badge>
-                        <span className="text-sm text-muted-foreground">
-              {activeCount} active
-            </span>
+            <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400">
+                        <Clock className="h-6 w-6" />
+                    </div>
+                    <div>
+                        <h2 className="text-xl font-bold text-foreground">
+                            Team Availability
+                        </h2>
+                        <div className="mt-1 flex items-center gap-2">
+                            <span className="relative flex h-2 w-2">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+                            </span>
+                            <span className="text-sm font-medium text-muted-foreground">
+                                {activeCount} active members
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div className="flex gap-2 sm:gap-3">
-                    <Button variant="outline" size="sm" className="text-xs sm:text-sm hover:text-white">
-                        Filter Specialty
+                <div className="flex gap-2">
+                    <Button variant="outline" size="sm" className="h-9 px-4">
+                        Filter
                     </Button>
-                    <Button variant="outline" size="sm" className="text-xs sm:text-sm hover:text-white">
-                        Sort by Status
+                    <Button variant="outline" size="sm" className="h-9 px-4">
+                        Sort
                     </Button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 {staffMembers.map((member) => (
                     <StaffCard key={member.id} member={member} />
                 ))}

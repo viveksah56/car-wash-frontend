@@ -5,35 +5,37 @@ import {Input} from "@/components/ui/input";
 import TeamAvailability from "@/components/staff/team-availability";
 
 export default function AdminDashboard(){
-    return(
-        <section>
-            <div className="border-b border-border bg-card p-6">
-                <div className="flex items-start justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold text-foreground mb-2">Staff Overview</h1>
-                        <p className="text-muted-foreground">Manage your team and monitor real-time assignments</p>
+    return (
+        <div className="space-y-8">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                <div>
+                    <h1 className="text-4xl font-bold tracking-tight text-foreground">Staff Overview</h1>
+                    <p className="mt-2 text-lg text-muted-foreground">
+                        Manage your team and monitor real-time assignments.
+                    </p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className="relative hidden sm:block">
+                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                            placeholder="Search staff..."
+                            className="w-64 pl-10 focus-visible:ring-primary"
+                        />
                     </div>
-                    <Button
-                        size="lg"
-                        className="gap-2 bg-foreground text-background hover:bg-foreground/90"
-                    >
-                        <Plus className="w-5 h-5"/>
+                    <Button className="gap-2 shadow-lg shadow-primary/20">
+                        <Plus className="h-5 w-5" />
                         Add Staff
                     </Button>
                 </div>
+            </div>
 
-                <div className="mt-6 flex items-center gap-3 bg-input rounded-lg px-4 py-2 max-w-sm">
-                    <Search className="w-5 h-5 text-muted-foreground"/>
-                    <Input
-                        placeholder="Search staff or bookings..."
-                        className="border-0 bg-transparent text-foreground placeholder:text-muted-foreground focus:ring-0"
-                    />
+            <div className="grid gap-6">
+                <div className="rounded-2xl border border-border bg-card/50 p-1 backdrop-blur-sm">
+                    <div className="rounded-xl bg-background/50 p-6 shadow-sm">
+                        <TeamAvailability />
+                    </div>
                 </div>
             </div>
-
-            <div>
-                <TeamAvailability/>
-            </div>
-        </section>
-    )
+        </div>
+    );
 }

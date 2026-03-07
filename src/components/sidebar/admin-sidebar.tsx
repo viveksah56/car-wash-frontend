@@ -42,16 +42,18 @@ export default function AdminSidebar() {
 
     return (
         <Sidebar collapsible="icon">
-            <SidebarHeader className={'border-2'}>
+            <SidebarHeader className="border-b border-border p-4">
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton
                             asChild
-                            className="data-[slot=sidebar-menu-button]:p-1.5!"
+                            className="h-10"
                         >
-                            <Link href="/admin" className="flex items-center gap-2">
-                                <User className="h-5 w-5 shrink-0 text-primary" />
-                                <span className="font-bold text-foreground">Admin Panel</span>
+                            <Link href="/admin" className="flex items-center gap-3">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                                    <User className="h-5 w-5" />
+                                </div>
+                                <span className="font-bold text-foreground group-data-[collapsible=icon]:hidden">Admin Panel</span>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
