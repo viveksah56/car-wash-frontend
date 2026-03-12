@@ -229,13 +229,13 @@ export function DataTable({
 
   return (
     <div className="w-full space-y-4">
-      <div className="rounded-lg border border-border overflow-hidden">
-        <div className="flex items-center gap-4 bg-muted/50 px-4 py-3 border-b">
+      <div className="hidden md:block rounded-lg border border-border overflow-hidden">
+        <div className="flex items-center gap-4 bg-muted/50 px-4 py-3 border-b overflow-x-auto">
           {columns.map((col: any) => (
             <div
               key={col.id || Math.random()}
-              style={{ width: col.size || "auto" }}
-              className="text-xs font-semibold text-muted-foreground"
+              style={{ width: col.size || "auto", minWidth: col.size || "auto" }}
+              className="text-xs font-semibold text-muted-foreground flex-shrink-0"
             >
               {typeof col.header === "function" ? col.header() : col.header}
             </div>
@@ -252,7 +252,7 @@ export function DataTable({
             items={dataIds}
             strategy={verticalListSortingStrategy}
           >
-            <div className="divide-y">
+            <div className="divide-y overflow-x-auto">
               {rows.length > 0 ? (
                 rows.map((row) => <DraggableRow key={row.id} row={row} />)
               ) : (
@@ -265,49 +265,82 @@ export function DataTable({
         </DndContext>
       </div>
 
-      <div className="flex items-center justify-between gap-2">
-        <div className="text-xs text-muted-foreground">
-          Page {currentPage} of {pageCount || 1}
-        </div>
-        <div className="flex gap-1">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-            className="h-8 w-8 p-0"
-          >
-            {"<<"}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-            className="h-8 px-2"
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-            className="h-8 px-2"
-          >
-            Next
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.setPageIndex(pageCount - 1)}
-            disabled={!table.getCanNextPage()}
-            className="h-8 w-8 p-0"
-          >
-            {">>"}
-          </Button>
-        </div>
+      <div className="md:hidden space-y-3">
+        {rows.length > 0 ? (
+          rows.map((row) => (
+            <div
+              key={row.id}
+              className="rounded-lg border border-border bg-card p-4 space-y-2"
+            >
+              {row.getVisibleCells().map((cell: any) => (
+                <div key={cell.id} className="flex justify-between items-start gap-2">
+                  <span className="font-medium text-sm text-muted-foreground min-w-fit">
+                    {typeof cell.column.columnDef.header === "function"
+                      ? cell.column.columnDef.header()
+                      : cell.column.columnDef.header}
+                  </span>
+                  <div className="text-right text-foreground">
+                    {flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext()
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))
+        ) : (
+          <div className="text-center py-8 text-muted-foreground">
+            No projects found
+          </div>
+        )}
       </div>
+
+      {pageCount > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4">
+          <div className="text-xs text-muted-foreground">
+            Page {currentPage} of {pageCount || 1}
+          </div>
+          <div className="flex gap-1 flex-wrap justify-center sm:justify-end">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+              className="h-8 w-8 p-0"
+            >
+              {"<<"}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="h-8 px-2 hidden sm:inline-flex"
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className="h-8 px-2 hidden sm:inline-flex"
+            >
+              Next
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.setPageIndex(pageCount - 1)}
+              disabled={!table.getCanNextPage()}
+              className="h-8 w-8 p-0"
+            >
+              {">>"}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

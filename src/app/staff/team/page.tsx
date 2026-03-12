@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
@@ -85,83 +86,99 @@ function getStatusColor(status: string) {
 }
 
 export default function TeamPage() {
+  const [search, setSearch] = React.useState('')
+
+  const filteredMembers = teamMembers.filter((member) =>
+    member.name.toLowerCase().includes(search.toLowerCase()) ||
+    member.role.toLowerCase().includes(search.toLowerCase()) ||
+    member.department.toLowerCase().includes(search.toLowerCase())
+  )
+
   return (
-    <div className="flex flex-col h-full gap-8 pb-24">
-      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+    <div className="flex flex-col h-full gap-6 sm:gap-8 pb-24 px-2 sm:px-0">
+      <div className="flex flex-col gap-4 sm:gap-6">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground">
             Team
           </h1>
-          <p className="mt-2 text-base sm:text-lg text-muted-foreground">
+          <p className="mt-2 text-sm sm:text-base text-muted-foreground">
             Connect and collaborate with your team members.
           </p>
         </div>
+
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search team members..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-10 focus-visible:ring-primary w-full"
+          />
+        </div>
       </div>
 
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search team members..."
-          className="pl-10 focus-visible:ring-primary"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {teamMembers.map((member) => (
-          <Card key={member.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <Avatar className="h-12 w-12">
-                      <AvatarImage src="" alt={member.name} />
-                      <AvatarFallback>{getInitials(member.name)}</AvatarFallback>
-                    </Avatar>
-                    <div
-                      className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background ${getStatusColor(member.status)}`}
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="text-base truncate">{member.name}</CardTitle>
-                    <CardDescription className="text-xs">{member.role}</CardDescription>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {filteredMembers.length > 0 ? (
+          filteredMembers.map((member) => (
+            <Card key={member.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div className="relative flex-shrink-0">
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage src="" alt={member.name} />
+                        <AvatarFallback>{getInitials(member.name)}</AvatarFallback>
+                      </Avatar>
+                      <div
+                        className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background ${getStatusColor(member.status)}`}
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-sm sm:text-base truncate">{member.name}</CardTitle>
+                      <CardDescription className="text-xs truncate">{member.role}</CardDescription>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">{member.department}</p>
-                <Badge variant="outline" className="text-xs">
-                  {member.status}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="space-y-2">
-                <a
-                  href={`mailto:${member.email}`}
-                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                <div className="space-y-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground">{member.department}</p>
+                  <Badge variant="outline" className="text-xs">
+                    {member.status}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="space-y-2">
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors truncate"
+                  >
+                    <Mail className="h-4 w-4 flex-shrink-0" />
+                    <span className="truncate">{member.email}</span>
+                  </a>
+                  <a
+                    href={`tel:${member.phone}`}
+                    className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <Phone className="h-4 w-4 flex-shrink-0" />
+                    {member.phone}
+                  </a>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full gap-2 text-xs sm:text-sm"
                 >
-                  <Mail className="h-4 w-4" />
-                  {member.email}
-                </a>
-                <a
-                  href={`tel:${member.phone}`}
-                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <Phone className="h-4 w-4" />
-                  {member.phone}
-                </a>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full gap-2"
-              >
-                <MessageSquare className="h-4 w-4" />
-                Message
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+                  <MessageSquare className="h-4 w-4" />
+                  Message
+                </Button>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-full text-center py-12">
+            <p className="text-muted-foreground">No team members found matching your search.</p>
+          </div>
+        )}
       </div>
     </div>
   )
