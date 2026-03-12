@@ -1,7 +1,7 @@
 "use client";
 
-import { useOptimistic, useCallback, useEffect, useState, useTransition } from "react";
-import { Droplets, Phone, Menu, Sun, Moon } from "lucide-react";
+import { useCallback, useEffect, useState, useTransition } from "react";
+import { Droplets, Phone, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -17,9 +17,9 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
-import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import ThemeToggle from "@/components/theme/theme-toggle";
 
 const NAV_LINKS = [
     { label: "Services", href: "#services" },
@@ -30,80 +30,6 @@ const NAV_LINKS = [
 ] as const;
 
 type NavLink = (typeof NAV_LINKS)[number];
-
-function ThemeToggle({ className }: { className?: string }) {
-    const { resolvedTheme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    const toggle = useCallback(() => {
-        const next = resolvedTheme === "dark" ? "light" : "dark";
-        setTheme(next);
-    }, [resolvedTheme, setTheme]);
-
-    if (!mounted) return null;
-
-    return (
-        <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggle}
-            aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
-            className={cn("h-9 w-9", className)}
-        >
-            <Sun
-                className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
-                aria-hidden="true"
-            />
-            <Moon
-                className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
-                aria-hidden="true"
-            />
-        </Button>
-    );
-}
-
-function MobileThemeToggle() {
-    const { resolvedTheme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
-    const toggle = useCallback(() => {
-        const next = resolvedTheme === "dark" ? "light" : "dark";
-        setTheme(next);
-    }, [resolvedTheme, setTheme]);
-
-    if (!mounted) return null;
-
-    const isDark = resolvedTheme === "dark";
-
-    return (
-        <Button
-            variant="outline"
-            className="w-full mb-3"
-            onClick={toggle}
-            aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
-        >
-            {isDark ? (
-                <>
-                    <Sun className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Light Mode
-                </>
-            ) : (
-                <>
-                    <Moon className="mr-2 h-4 w-4" aria-hidden="true" />
-                    Dark Mode
-                </>
-            )}
-        </Button>
-    );
-}
 
 function NavLinks({ onClick }: { onClick?: () => void }) {
     return (
@@ -198,7 +124,7 @@ export default function Navbar() {
                         <span>(555) 123-4567</span>
                     </a>
 
-                    <ThemeToggle />
+                    <ThemeToggle variant="icon" />
 
                     <Button
                         size="sm"
@@ -243,7 +169,7 @@ export default function Navbar() {
 
                         <Separator className="my-4" />
 
-                        <MobileThemeToggle />
+                        <ThemeToggle variant="default" size="sm" className="mb-3" />
 
                         <Button
                             className="w-full"

@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
-import { SectionCards } from "@/components/dashboard/section-cards";
-import { DataTable } from "@/components/dashboard/data-table";
-import { Button } from "@/components/ui/button";
-import { Plus, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { SectionCards } from '@/components/dashboard/section-cards';
+import { DataTable } from '@/components/dashboard/data-table';
+import { Button } from '@/components/ui/button';
+import { Plus, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import PerformanceManager from '@/components/admin/performance-manager';
 
 const staticTableData = [
   {
@@ -111,8 +112,11 @@ export default function AdminDashboard() {
 
       <SectionCards />
 
-      <div className="flex-1 min-h-0">
-        <DataTable data={staticTableData} />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <DataTable data={staticTableData} />
+        </div>
+        <PerformanceManager />
       </div>
 
 
