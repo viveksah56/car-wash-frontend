@@ -7,6 +7,7 @@ import {
     BarChart3,
     Settings,
     User,
+    LogOut,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -19,6 +20,7 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarSeparator,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -27,8 +29,11 @@ import { useMemo } from "react";
 const menuItems = [
     { icon: LayoutGrid, label: "Dashboard", href: "/admin" },
     { icon: Calendar, label: "Bookings", href: "/admin/bookings" },
-    { icon: Users, label: "Staff Management", href: "/admin/staff" },
+    { icon: Users, label: "Staff", href: "/admin/staff" },
     { icon: BarChart3, label: "Analytics", href: "/admin/analytics" },
+];
+
+const settingsItems = [
     { icon: Settings, label: "Settings", href: "/admin/settings" },
 ];
 
@@ -36,34 +41,36 @@ export default function AdminSidebar() {
     const pathname = usePathname();
 
     const activeHref = useMemo(
-        () => menuItems.find((item) => pathname === item.href)?.href ?? null,
+        () => [...menuItems, ...settingsItems].find((item) => pathname === item.href)?.href ?? null,
         [pathname]
     );
 
     return (
-        <Sidebar collapsible="icon">
-            <SidebarHeader className="border-b border-border p-4">
+        <Sidebar collapsible="icon" className="bg-sidebar">
+            <SidebarHeader className="border-b border-sidebar-border px-4 py-3">
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton
                             asChild
-                            className="h-10"
+                            className="h-10 px-2 hover:bg-sidebar-accent"
                         >
-                            <Link href="/admin" className="flex items-center gap-3">
-                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                                    <User className="h-5 w-5" />
+                            <Link href="/admin" className="flex items-center gap-2">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary flex-shrink-0">
+                                    <LayoutGrid className="h-4 w-4" />
                                 </div>
-                                <span className="font-bold text-foreground group-data-[collapsible=icon]:hidden">Admin Panel</span>
+                                <span className="font-semibold text-sm text-sidebar-foreground group-data-[collapsible=icon]:hidden truncate">
+                                    Admin
+                                </span>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
 
-            <SidebarContent>
-                <SidebarGroup>
+            <SidebarContent className="px-2 py-4">
+                <SidebarGroup className="px-0">
                     <SidebarGroupContent>
-                        <SidebarMenu>
+                        <SidebarMenu className="gap-1">
                             {menuItems.map((item) => (
                                 <SidebarMenuItem key={item.href}>
                                     <SidebarMenuButton
@@ -71,14 +78,48 @@ export default function AdminSidebar() {
                                         isActive={activeHref === item.href}
                                         tooltip={item.label}
                                         className={cn(
-                                            "gap-3 transition-colors duration-150",
-                                            activeHref === item.href &&
-                                            "bg-accent font-medium text-accent-foreground"
+                                            "px-3 py-2 transition-all duration-200 ease-out",
+                                            activeHref === item.href
+                                                ? "bg-primary/10 text-primary font-medium"
+                                                : "text-sidebar-foreground hover:bg-sidebar-accent"
                                         )}
                                     >
-                                        <Link href={item.href} className="flex items-center gap-3">
-                                            <item.icon className="h-4 w-4 shrink-0" />
-                                            <span>{item.label}</span>
+                                        <Link href={item.href} className="flex items-center gap-3 w-full">
+                                            <item.icon className="h-4 w-4 flex-shrink-0" />
+                                            <span className="text-sm group-data-[collapsible=icon]:hidden">
+                                                {item.label}
+                                            </span>
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarSeparator className="my-4 mx-0" />
+
+                <SidebarGroup className="px-0">
+                    <SidebarGroupContent>
+                        <SidebarMenu className="gap-1">
+                            {settingsItems.map((item) => (
+                                <SidebarMenuItem key={item.href}>
+                                    <SidebarMenuButton
+                                        asChild
+                                        isActive={activeHref === item.href}
+                                        tooltip={item.label}
+                                        className={cn(
+                                            "px-3 py-2 transition-all duration-200 ease-out",
+                                            activeHref === item.href
+                                                ? "bg-primary/10 text-primary font-medium"
+                                                : "text-sidebar-foreground hover:bg-sidebar-accent"
+                                        )}
+                                    >
+                                        <Link href={item.href} className="flex items-center gap-3 w-full">
+                                            <item.icon className="h-4 w-4 flex-shrink-0" />
+                                            <span className="text-sm group-data-[collapsible=icon]:hidden">
+                                                {item.label}
+                                            </span>
                                         </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
@@ -88,20 +129,22 @@ export default function AdminSidebar() {
                 </SidebarGroup>
             </SidebarContent>
 
-            <SidebarFooter>
-                <SidebarGroup>
+            <SidebarFooter className="border-t border-sidebar-border p-3 mt-auto">
+                <SidebarGroup className="px-0">
                     <SidebarGroupContent>
-                        <SidebarMenu>
+                        <SidebarMenu className="gap-1">
                             <SidebarMenuItem>
                                 <SidebarMenuButton
                                     asChild
-                                    tooltip="Account"
-                                    className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
+                                    tooltip="Logout"
+                                    className="px-3 py-2 text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-200"
                                 >
-                                    <Link href="/admin/account" className="flex items-center gap-3">
-                                        <User className="h-4 w-4 shrink-0" />
-                                        <span>Account</span>
-                                    </Link>
+                                    <button className="flex items-center gap-3 w-full cursor-pointer">
+                                        <LogOut className="h-4 w-4 flex-shrink-0" />
+                                        <span className="text-sm group-data-[collapsible=icon]:hidden">
+                                            Logout
+                                        </span>
+                                    </button>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         </SidebarMenu>
