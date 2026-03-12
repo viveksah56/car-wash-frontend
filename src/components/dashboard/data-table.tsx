@@ -163,7 +163,7 @@ function DraggableRow({ row }: { row: any }) {
         transition: transition,
       }}
     >
-      {row.getVisibleCells().map((cell) => (
+      {row.getVisibleCells().map((cell: any) => (
         <div
           key={cell.id}
           style={{ width: cell.column.columnDef.size || "auto" }}
@@ -231,13 +231,13 @@ export function DataTable({
     <div className="w-full space-y-4">
       <div className="rounded-lg border border-border overflow-hidden">
         <div className="flex items-center gap-4 bg-muted/50 px-4 py-3 border-b">
-          {columns.map((col) => (
+          {columns.map((col: any) => (
             <div
-              key={col.id || "unknown"}
+              key={col.id || Math.random()}
               style={{ width: col.size || "auto" }}
               className="text-xs font-semibold text-muted-foreground"
             >
-              {col.header}
+              {typeof col.header === "function" ? col.header() : col.header}
             </div>
           ))}
         </div>
