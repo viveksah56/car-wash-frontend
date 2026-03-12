@@ -1,24 +1,24 @@
-"use client"
+'use client'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
+    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar'
 
-import Link from "next/link"
-import Image from "next/image"
-import { usePathname } from "next/navigation"
-import { useMemo } from "react"
-
-import AppSidebarFooter from "@/components/sidebar/sidebar-footer"
+import Link from 'next/link'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { useMemo } from 'react'
+import AppSidebarFooter from '@/components/sidebar/sidebar-footer'
 
 interface SidebarItem {
     icon: React.ComponentType<{ className?: string }>
@@ -28,16 +28,27 @@ interface SidebarItem {
 
 interface AppSidebarProps {
     sidebarItems: SidebarItem[]
-    settingsItems: SidebarItem[]
+    settingsItems?: SidebarItem[]
+    appName?: string
+    appLogo?: string
+    user?: {
+        name: string
+        email: string
+        avatar: string
+    }
     className?: string
+    [key: string]: any
 }
 
 export default function AppSidebar({
-                                       sidebarItems,
-                                       settingsItems,
-                                       className,
-                                       ...props
-                                   }: AppSidebarProps) {
+    sidebarItems,
+    settingsItems = [],
+    appName = 'Admin',
+    appLogo = '/file.svg',
+    user = { name: 'User', email: '', avatar: '' },
+    className,
+    ...props
+}: AppSidebarProps) {
     const pathname = usePathname()
 
     const activeHref = useMemo(() => {
@@ -45,7 +56,7 @@ export default function AppSidebar({
         return allItems.find((item) => pathname.startsWith(item.href))?.href ?? null
     }, [pathname, sidebarItems, settingsItems])
 
-    const renderMenu = (items: SidebarItem[]) =>
+    const renderMenuItems = (items: SidebarItem[]) =>
         items.map((item) => (
             <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
@@ -53,35 +64,41 @@ export default function AppSidebar({
                     tooltip={item.label}
                     isActive={activeHref === item.href}
                     className={cn(
-                        "px-3 py-2 transition-all duration-200 ease-out",
+                        'px-3 py-2 transition-all duration-200 ease-out',
                         activeHref === item.href
-                            ? "bg-primary/10 text-primary font-medium"
-                            : "text-sidebar-foreground hover:bg-sidebar-accent"
+                            ? 'bg-primary/10 text-primary font-medium'
+                            : 'text-sidebar-foreground hover:bg-sidebar-accent'
                     )}
                 >
                     <Link href={item.href} className="flex items-center gap-3 w-full">
                         <item.icon className="h-4 w-4 shrink-0" />
                         <span className="text-sm group-data-[collapsible=icon]:hidden">
-              {item.label}
-            </span>
+                            {item.label}
+                        </span>
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>
         ))
 
     return (
-        <Sidebar collapsible="icon" className={cn("bg-sidebar", className)} {...props}>
+        <Sidebar collapsible="icon" className={cn('bg-sidebar', className)} {...props}>
             <SidebarHeader className="border-b border-sidebar-border px-4 py-3">
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild className="h-10 px-2 hover:bg-sidebar-accent">
-                            <Link href="/admin" className="flex items-center gap-2">
+                            <Link href={sidebarItems[0]?.href || '/'} className="flex items-center gap-2">
                                 <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary flex-shrink-0">
-                                    <Image src="/file.svg" alt="File" width={32} height={32} />
+                                    <Image
+                                        src={appLogo}
+                                        alt={appName}
+                                        width={32}
+                                        height={32}
+                                        priority
+                                    />
                                 </div>
                                 <span className="font-semibold text-sm text-sidebar-foreground group-data-[collapsible=icon]:hidden truncate">
-                  Admin
-                </span>
+                                    {appName}
+                                </span>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -91,23 +108,28 @@ export default function AppSidebar({
             <SidebarContent className="px-2 py-4">
                 <SidebarGroup className="px-0">
                     <SidebarGroupContent>
-                        <SidebarMenu className="gap-1">{renderMenu(sidebarItems)}</SidebarMenu>
+                        <SidebarMenu className="gap-1">
+                            {renderMenuItems(sidebarItems)}
+                        </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
+
+                {settingsItems.length > 0 && (
+                    <SidebarGroup className="px-0 mt-auto">
+                        <SidebarGroupLabel className="px-3 text-xs font-semibold text-muted-foreground group-data-[collapsible=icon]:hidden">
+                            Settings
+                        </SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu className="gap-1">
+                                {renderMenuItems(settingsItems)}
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                )}
             </SidebarContent>
 
-            <SidebarFooter className="border-t border-sidebar-border p-3 mt-auto">
-                <SidebarGroup className="px-0">
-                    <SidebarGroupContent>
-                        <AppSidebarFooter
-                            user={{
-                                name: "Bibek",
-                                email: "",
-                                avatar: "",
-                            }}
-                        />
-                    </SidebarGroupContent>
-                </SidebarGroup>
+            <SidebarFooter className="border-t border-sidebar-border p-3">
+                <AppSidebarFooter user={user} />
             </SidebarFooter>
         </Sidebar>
     )
