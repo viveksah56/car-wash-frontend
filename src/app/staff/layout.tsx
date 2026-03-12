@@ -1,11 +1,16 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import type { ReactNode, Metadata } from 'react'
 import { BarChart3, Calendar, LayoutGrid, LogOut, Settings, Users } from 'lucide-react'
 import ReusableSidebar from '@/components/sidebar/reusable-sidebar'
 
 interface StaffLayoutProps {
     children: ReactNode
+}
+
+export const metadata: Metadata = {
+    title: 'Staff Portal - Car Wash',
+    description: 'Access your schedule, team information, performance metrics, and staff management tools.',
 }
 
 const menuItems = [

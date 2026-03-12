@@ -1,11 +1,16 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import type { ReactNode, Metadata } from 'react'
 import { BarChart3, Calendar, LayoutGrid, Settings, Users } from 'lucide-react'
 import ReusableSidebar from '@/components/sidebar/reusable-sidebar'
 
 interface AdminLayoutProps {
     children: ReactNode
+}
+
+export const metadata: Metadata = {
+    title: 'Admin Dashboard - Car Wash',
+    description: 'Manage bookings, staff, analytics, and business operations for your car wash service.',
 }
 
 const menuItems = [
