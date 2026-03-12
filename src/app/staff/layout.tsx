@@ -1,5 +1,3 @@
-'use client'
-
 import type { ReactNode, Metadata } from 'react'
 import { BarChart3, Calendar, LayoutGrid, LogOut, Settings, Users } from 'lucide-react'
 import ReusableSidebar from '@/components/sidebar/reusable-sidebar'
