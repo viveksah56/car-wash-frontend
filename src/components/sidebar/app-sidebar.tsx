@@ -85,18 +85,34 @@ export default function AppSidebar({
             <SidebarHeader className="border-b border-sidebar-border px-4 py-3">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton asChild className="h-10 px-2 hover:bg-sidebar-accent">
-                            <Link href={sidebarItems[0]?.href || '/'} className="flex items-center gap-2">
-                                <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary flex-shrink-0">
+                        <SidebarMenuButton 
+                            asChild 
+                            className={cn(
+                                'h-10 px-2 transition-colors duration-200',
+                                'hover:bg-sidebar-accent active:bg-sidebar-accent/80'
+                            )}
+                        >
+                            <Link 
+                                href={sidebarItems[0]?.href || '/'} 
+                                className="flex items-center gap-3 w-full min-w-0"
+                            >
+                                <div className={cn(
+                                    'flex h-8 w-8 items-center justify-center rounded-md',
+                                    'bg-primary/10 text-primary flex-shrink-0'
+                                )}>
                                     <Image
                                         src={appLogo}
                                         alt={appName}
                                         width={32}
                                         height={32}
                                         priority
+                                        className="w-5 h-5 object-contain"
                                     />
                                 </div>
-                                <span className="font-semibold text-sm text-sidebar-foreground group-data-[collapsible=icon]:hidden truncate">
+                                <span className={cn(
+                                    'font-semibold text-sm text-sidebar-foreground',
+                                    'group-data-[collapsible=icon]:hidden truncate'
+                                )}>
                                     {appName}
                                 </span>
                             </Link>
