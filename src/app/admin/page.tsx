@@ -2,7 +2,6 @@
 
 import { SectionCards } from "@/components/dashboard/section-cards";
 import { DataTable } from "@/components/dashboard/data-table";
-import { NavUser } from "@/components/dashboard/nav-user";
 import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -116,17 +115,7 @@ export default function AdminDashboard() {
         <DataTable data={staticTableData} />
       </div>
 
-      <footer className="fixed bottom-0 left-0 right-0 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4 sm:p-6 z-50">
-        <div className="max-w-full">
-          <NavUser
-            user={{
-              name: "Admin User",
-              email: "admin@carwash.com",
-              avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=admin",
-            }}
-          />
-        </div>
-      </footer>
+
     </div>
   );
 }
