@@ -61,7 +61,7 @@ export default function ReusableSidebar({
     }, [breadcrumbs, appName, menuItems])
 
     return (
-        <SidebarProvider suppressHydrationWarning {...props}>
+        <SidebarProvider suppressHydrationWarning {...props} defaultOpen={false}>
             <AppSidebar
                 sidebarItems={menuItems}
                 settingsItems={settingsItems}

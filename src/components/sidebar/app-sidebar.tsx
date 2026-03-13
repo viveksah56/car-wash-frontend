@@ -84,7 +84,6 @@ export default function AppSidebar({
         <Sidebar 
             collapsible="icon" 
             className={cn('bg-sidebar border-r border-sidebar-border', className)}
-            defaultOpen={false}
             {...props}
         >
             <SidebarHeader className="border-b border-sidebar-border px-4 py-3">
